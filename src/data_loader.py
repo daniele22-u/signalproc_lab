@@ -46,16 +46,27 @@ class D1NAMODataLoader:
         # Load ECG data
         ecg_file = self.data_dir / f"patient_{patient_id}_ecg.csv"
         if ecg_file.exists():
-            ecg_df = pd.read_csv(ecg_file)
-            patient_data['ecg_signal'] = ecg_df['ecg'].values
-            patient_data['ecg_timestamps'] = pd.to_datetime(ecg_df['timestamp'])
+            try:
+                ecg_df = pd.read_csv(ecg_file)
+                if 'ecg' not in ecg_df.columns or 'timestamp' not in ecg_df.columns:
+                    raise ValueError(f"ECG file must contain 'ecg' and 'timestamp' columns")
+                patient_data['ecg_signal'] = ecg_df['ecg'].values
+                patient_data['ecg_timestamps'] = pd.to_datetime(ecg_df['timestamp'])
+            except Exception as e:
+                print(f"Error loading ECG data: {e}")
+                return patient_data
         
         # Load CGM data
         cgm_file = self.data_dir / f"patient_{patient_id}_cgm.csv"
         if cgm_file.exists():
-            cgm_df = pd.read_csv(cgm_file)
-            patient_data['cgm_values'] = cgm_df['glucose'].values
-            patient_data['cgm_timestamps'] = pd.to_datetime(cgm_df['timestamp'])
+            try:
+                cgm_df = pd.read_csv(cgm_file)
+                if 'glucose' not in cgm_df.columns or 'timestamp' not in cgm_df.columns:
+                    raise ValueError(f"CGM file must contain 'glucose' and 'timestamp' columns")
+                patient_data['cgm_values'] = cgm_df['glucose'].values
+                patient_data['cgm_timestamps'] = pd.to_datetime(cgm_df['timestamp'])
+            except Exception as e:
+                print(f"Error loading CGM data: {e}")
         
         return patient_data
     
@@ -195,9 +206,10 @@ class SyntheticDataGenerator:
         ecg_signal = np.sin(2 * np.pi * heart_rate * t)
         # Add R-peaks
         r_peak_period = int(self.sampling_rate / heart_rate)
+        r_peak_width = int(0.04 * self.sampling_rate)  # 40ms R-peak width
         for i in range(0, n_samples, r_peak_period):
             if i < n_samples:
-                ecg_signal[i:min(i+10, n_samples)] += 2.0
+                ecg_signal[i:min(i+r_peak_width, n_samples)] += 2.0
         # Add noise
         ecg_signal += np.random.normal(0, 0.1, n_samples)
         

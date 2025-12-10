@@ -71,13 +71,14 @@ class ECGProcessor:
         Args:
             ecg_signal: Cleaned ECG signal
             r_peaks: Indices of R-peaks
-            window_size: Size of window around R-peak (default: 0.6 * sampling_rate)
+            window_size: Size of window around R-peak (default: 0.6s = 600ms worth of samples)
             
         Returns:
             List of beat segments
         """
         if window_size is None:
-            window_size = int(0.6 * self.sampling_rate)  # 600ms window
+            # 600ms window (0.6 seconds * sampling_rate samples/second)
+            window_size = int(0.6 * self.sampling_rate)
         
         beats = []
         half_window = window_size // 2

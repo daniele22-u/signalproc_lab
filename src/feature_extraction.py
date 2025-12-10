@@ -189,6 +189,9 @@ class IntervalFeatureExtractor:
     def __init__(self):
         pass
     
+    # Probability bins for grouping (as per paper)
+    PROB_BINS = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0]
+    
     def extract_interval_features(self, beat_predictions, hour_of_day=None):
         """
         Extract interval-level features from beat-level predictions
@@ -215,12 +218,13 @@ class IntervalFeatureExtractor:
         # Mean predicted probability
         features['mean_prob'] = np.mean(beat_predictions)
         
-        # Group probabilities into bins
-        features['group1'] = np.mean((beat_predictions > 0.0) & (beat_predictions <= 0.2))
-        features['group2'] = np.mean((beat_predictions > 0.2) & (beat_predictions <= 0.4))
-        features['group3'] = np.mean((beat_predictions > 0.4) & (beat_predictions <= 0.6))
-        features['group4'] = np.mean((beat_predictions > 0.6) & (beat_predictions <= 0.8))
-        features['group5'] = np.mean((beat_predictions > 0.8) & (beat_predictions <= 1.0))
+        # Group probabilities into bins (as defined in paper)
+        bins = self.PROB_BINS
+        features['group1'] = np.mean((beat_predictions > bins[0]) & (beat_predictions <= bins[1]))
+        features['group2'] = np.mean((beat_predictions > bins[1]) & (beat_predictions <= bins[2]))
+        features['group3'] = np.mean((beat_predictions > bins[2]) & (beat_predictions <= bins[3]))
+        features['group4'] = np.mean((beat_predictions > bins[3]) & (beat_predictions <= bins[4]))
+        features['group5'] = np.mean((beat_predictions > bins[4]) & (beat_predictions <= bins[5]))
         
         # Cyclical encoding of hour
         if hour_of_day is not None:
