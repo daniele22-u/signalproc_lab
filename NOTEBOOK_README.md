@@ -69,7 +69,7 @@ Questo notebook è stato creato per permetterti di:
 
 ```bash
 # Installa Jupyter (se non già installato)
-pip install jupyter
+pip install jupyter ipykernel
 
 # Installa le dipendenze del progetto
 pip install -r requirements.txt
