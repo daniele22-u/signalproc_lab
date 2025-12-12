@@ -62,6 +62,27 @@ signalproc_lab/
 
 ## Usage
 
+### 🚀 Quick Start with Interactive Notebook (Recommended)
+
+**NEW!** Try the comprehensive Jupyter notebook for an interactive learning experience:
+
+```bash
+# Install Jupyter if not already installed
+pip install jupyter
+
+# Open the tutorial notebook
+jupyter notebook tutorial_completo.ipynb
+```
+
+The notebook (`tutorial_completo.ipynb`) provides:
+- ✅ **Complete tutorial in Italian** with step-by-step explanations
+- ✅ **Interactive code cells** - run and experiment in real-time
+- ✅ **Visualizations** - plots and graphs inline
+- ✅ **Works out-of-the-box** - uses synthetic data (no dataset required)
+- ✅ **All features covered** - from data loading to model evaluation
+
+See [NOTEBOOK_README.md](NOTEBOOK_README.md) for detailed notebook documentation.
+
 ### Quick Start with Example Script
 
 ```python
