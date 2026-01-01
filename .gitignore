@@ -38,6 +38,7 @@ models/*.joblib
 .ipynb_checkpoints/
 *.ipynb
 !tutorial_completo.ipynb
+!paper_replication.ipynb
 
 # IDE
 .vscode/
